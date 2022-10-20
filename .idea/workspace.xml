@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="db6245c5-4ddd-49ef-9de7-c2599928ff44" name="Changes" comment="--">
+    <list default="true" id="db6245c5-4ddd-49ef-9de7-c2599928ff44" name="Changes" comment="with rest and rabbit controllers">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-api/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/core-api/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/core/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dependency-management-bom/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dependency-management-bom/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dto/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dto/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/utils/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/liga/medical/messageanalyzer/core/config/RabbitConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/liga/medical/messageanalyzer/core/config/RabbitConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/liga/medical/messageanalyzer/core/controller/RestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/liga/medical/messageanalyzer/core/controller/RestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/liga/medical/messageanalyzer/core/service/RabbitSenderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/liga/medical/messageanalyzer/core/service/RabbitSenderServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,17 +18,27 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2Fl6eLiMNUONqupKdpxolb1Oxje" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -49,6 +56,15 @@
     &quot;spring.configuration.checksum&quot;: &quot;a74ad8dfacd4f985eb3977517615ce25&quot;
   }
 }</component>
+  <component name="RunManager">
+    <configuration name="MessageAnalyzerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="core" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="liga.medical.messageanalyzer.core.MessageAnalyzerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -61,8 +77,26 @@
       <workItem from="1665061047946" duration="1422000" />
       <workItem from="1665344506821" duration="598000" />
       <workItem from="1665671307290" duration="258000" />
-      <workItem from="1665674532884" duration="925000" />
+      <workItem from="1665674532884" duration="1365000" />
+      <workItem from="1665751573845" duration="1303000" />
+      <workItem from="1665818719263" duration="604000" />
+      <workItem from="1665828267018" duration="2005000" />
     </task>
+    <task id="LOCAL-00001" summary="--">
+      <created>1665675975645</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1665675975645</updated>
+    </task>
+    <task id="LOCAL-00002" summary="with rest and rabbit controllers">
+      <created>1665829035684</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1665829035684</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -81,6 +115,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="--" />
-    <option name="LAST_COMMIT_MESSAGE" value="--" />
+    <MESSAGE value="with rest and rabbit controller" />
+    <MESSAGE value="with rest and rabbit controllers" />
+    <option name="LAST_COMMIT_MESSAGE" value="with rest and rabbit controllers" />
   </component>
 </project>

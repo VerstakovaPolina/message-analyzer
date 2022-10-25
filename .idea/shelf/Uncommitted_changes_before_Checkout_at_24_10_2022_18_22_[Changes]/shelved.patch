@@ -1,0 +1,57 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -4,9 +4,8 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="db6245c5-4ddd-49ef-9de7-c2599928ff44" name="Changes" comment="with rest and rabbit controllers">
++    <list default="true" id="db6245c5-4ddd-49ef-9de7-c2599928ff44" name="Changes" comment="--">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/core/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/core/pom.xml" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -80,6 +79,8 @@
+       <workItem from="1665818719263" duration="604000" />
+       <workItem from="1665828267018" duration="2538000" />
+       <workItem from="1666267384498" duration="1352000" />
++      <workItem from="1666269985460" duration="40000" />
++      <workItem from="1666322229176" duration="25000" />
+     </task>
+     <task id="LOCAL-00001" summary="--">
+       <created>1665675975645</created>
+@@ -102,7 +103,14 @@
+       <option name="project" value="LOCAL" />
+       <updated>1665834911775</updated>
+     </task>
+-    <option name="localTasksCounter" value="4" />
++    <task id="LOCAL-00004" summary="--">
++      <created>1666270014113</created>
++      <option name="number" value="00004" />
++      <option name="presentableId" value="LOCAL-00004" />
++      <option name="project" value="LOCAL" />
++      <updated>1666270014113</updated>
++    </task>
++    <option name="localTasksCounter" value="5" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -120,9 +128,9 @@
+     </option>
+   </component>
+   <component name="VcsManagerConfiguration">
+-    <MESSAGE value="--" />
+     <MESSAGE value="with rest and rabbit controller" />
+     <MESSAGE value="with rest and rabbit controllers" />
+-    <option name="LAST_COMMIT_MESSAGE" value="with rest and rabbit controllers" />
++    <MESSAGE value="--" />
++    <option name="LAST_COMMIT_MESSAGE" value="--" />
+   </component>
+ </project>
+\ No newline at end of file

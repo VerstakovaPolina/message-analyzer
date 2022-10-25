@@ -1,0 +1,151 @@
+Index: core/src/main/java/liga/medical/messageanalyzer/core/controller/RabbitController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package liga.medical.messageanalyzer.core.controller;\r\n\r\nimport com.fasterxml.jackson.core.JsonProcessingException;\r\nimport liga.medical.messageanalyzer.core.api.RabbitSenderService;\r\nimport liga.medical.messageanalyzer.core.config.RabbitConfig;\r\nimport liga.medical.messageanalyzer.core.model.RabbitMessageDto;\r\nimport org.springframework.web.bind.annotation.PostMapping;\r\nimport org.springframework.web.bind.annotation.RequestBody;\r\nimport org.springframework.web.bind.annotation.RequestMapping;\r\nimport org.springframework.web.bind.annotation.RestController;\r\n\r\n@RestController\r\n@RequestMapping(\"/rabbit\")\r\npublic class RabbitController {\r\n\r\n    private final RabbitSenderService rabbitSenderService;\r\n\r\n    public RabbitController(RabbitSenderService rabbitSenderService) {\r\n        this.rabbitSenderService = rabbitSenderService;\r\n    }\r\n\r\n    @PostMapping(\"/send\")\r\n    public void sendMessage(@RequestBody RabbitMessageDto messageDto) throws JsonProcessingException {\r\n        rabbitSenderService.sendMessage(messageDto, RabbitConfig.COMMON_MONITORING_QUEUE_NAME);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/core/src/main/java/liga/medical/messageanalyzer/core/controller/RabbitController.java b/core/src/main/java/liga/medical/messageanalyzer/core/controller/RabbitController.java
+--- a/core/src/main/java/liga/medical/messageanalyzer/core/controller/RabbitController.java	(revision e51956cd7cd3d0a58a37f357def5eaf6fb14001c)
++++ b/core/src/main/java/liga/medical/messageanalyzer/core/controller/RabbitController.java	(date 1666627220593)
+@@ -21,6 +21,6 @@
+ 
+     @PostMapping("/send")
+     public void sendMessage(@RequestBody RabbitMessageDto messageDto) throws JsonProcessingException {
+-        rabbitSenderService.sendMessage(messageDto, RabbitConfig.COMMON_MONITORING_QUEUE_NAME);
++        rabbitSenderService.sendMessage(messageDto, RabbitConfig.COMMON_MONITORING_QUEUE);
+     }
+ }
+Index: core/src/main/java/liga/medical/messageanalyzer/core/config/RabbitConfig.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package liga.medical.messageanalyzer.core.config;\r\n\r\nimport org.springframework.amqp.core.AmqpAdmin;\r\nimport org.springframework.amqp.core.Queue;\r\nimport org.springframework.amqp.rabbit.connection.CachingConnectionFactory;\r\nimport org.springframework.amqp.rabbit.connection.ConnectionFactory;\r\nimport org.springframework.amqp.rabbit.core.RabbitAdmin;\r\nimport org.springframework.amqp.rabbit.core.RabbitTemplate;\r\nimport org.springframework.context.annotation.Bean;\r\nimport org.springframework.context.annotation.Configuration;\r\n\r\n@Configuration\r\npublic class RabbitConfig {\r\n\r\n    public static final String COMMON_MONITORING_QUEUE_NAME = \"common_monitoring_queue\";\r\n\r\n    private static final String HOST = \"localhost\";\r\n\r\n    @Bean\r\n    public ConnectionFactory connectionFactory() {\r\n        return new CachingConnectionFactory(HOST);\r\n    }\r\n\r\n    @Bean\r\n    public AmqpAdmin amqpAdmin() {\r\n        return new RabbitAdmin(connectionFactory());\r\n    }\r\n\r\n    @Bean\r\n    public RabbitTemplate rabbitTemplate() {\r\n        return new RabbitTemplate(connectionFactory());\r\n    }\r\n\r\n    @Bean\r\n    public Queue getQueue() {\r\n        return new Queue(COMMON_MONITORING_QUEUE_NAME);\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/core/src/main/java/liga/medical/messageanalyzer/core/config/RabbitConfig.java b/core/src/main/java/liga/medical/messageanalyzer/core/config/RabbitConfig.java
+--- a/core/src/main/java/liga/medical/messageanalyzer/core/config/RabbitConfig.java	(revision e51956cd7cd3d0a58a37f357def5eaf6fb14001c)
++++ b/core/src/main/java/liga/medical/messageanalyzer/core/config/RabbitConfig.java	(date 1666627220618)
+@@ -6,19 +6,33 @@
+ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+ import org.springframework.amqp.rabbit.core.RabbitAdmin;
+ import org.springframework.amqp.rabbit.core.RabbitTemplate;
++import org.springframework.beans.factory.annotation.Value;
+ import org.springframework.context.annotation.Bean;
+ import org.springframework.context.annotation.Configuration;
+ 
+ @Configuration
+ public class RabbitConfig {
+ 
+-    public static final String COMMON_MONITORING_QUEUE_NAME = "common_monitoring_queue";
++    public static final String COMMON_MONITORING_QUEUE = "common_monitoring_queue";
++
++    @Value("${spring.rabbitmq.queue}")
++    private String commonMonitoringQueueName;
+ 
+-    private static final String HOST = "localhost";
++    @Value("${spring.rabbitmq.username}")
++    private String username;
++
++    @Value("${spring.rabbitmq.password}")
++    private String password;
++
++    @Value("${spring.rabbitmq.host}")
++    private String host;
+ 
+     @Bean
+     public ConnectionFactory connectionFactory() {
+-        return new CachingConnectionFactory(HOST);
++        CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory(host);
++        cachingConnectionFactory.setUsername(username);
++        cachingConnectionFactory.setPassword(password);
++        return cachingConnectionFactory;
+     }
+ 
+     @Bean
+@@ -33,7 +47,7 @@
+ 
+     @Bean
+     public Queue getQueue() {
+-        return new Queue(COMMON_MONITORING_QUEUE_NAME);
++        return new Queue(commonMonitoringQueueName);
+     }
+ }
+ 
+Index: core/src/main/resources/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>spring.datasource.url=jdbc:postgresql://localhost:5432/work_pc?currentSchema=clinic\r\nspring.datasource.username=postgres\r\nspring.datasource.password=root\r\nspring.jpa.hibernate.ddl-auto=update\r\n\r\nserver.port=8081\r\n\r\nspring.rabbitmq.host=localhost\r\nspring.rabbitmq.port=5672\r\nspring.rabbitmq.username=guest\r\nspring.rabbitmq.password=guest\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/core/src/main/resources/application.properties b/core/src/main/resources/application.properties
+--- a/core/src/main/resources/application.properties	(revision e51956cd7cd3d0a58a37f357def5eaf6fb14001c)
++++ b/core/src/main/resources/application.properties	(date 1666626128330)
+@@ -1,12 +1,7 @@
+-spring.datasource.url=jdbc:postgresql://localhost:5432/work_pc?currentSchema=clinic
+-spring.datasource.username=postgres
+-spring.datasource.password=root
+-spring.jpa.hibernate.ddl-auto=update
+-
+ server.port=8081
+ 
+ spring.rabbitmq.host=localhost
+-spring.rabbitmq.port=5672
++spring.rabbitmq.port=15672
+ spring.rabbitmq.username=guest
+ spring.rabbitmq.password=guest
+-
++spring.rabbitmq.queue=common_monitoring_queue
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ExternalStorageConfigurationManager\" enabled=\"true\" />\r\n  <component name=\"MavenProjectsManager\">\r\n    <option name=\"originalFiles\">\r\n      <list>\r\n        <option value=\"$PROJECT_DIR$/pom.xml\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"11\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision e51956cd7cd3d0a58a37f357def5eaf6fb14001c)
++++ b/.idea/misc.xml	(date 1666625079872)
+@@ -11,4 +11,7 @@
+   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
++  <component name="ProjectType">
++    <option name="id" value="jpab" />
++  </component>
+ </project>
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"db6245c5-4ddd-49ef-9de7-c2599928ff44\" name=\"Changes\" comment=\"with rest and rabbit controllers\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/core/pom.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/core/pom.xml\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Interface\" />\r\n        <option value=\"Enum\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"master\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2Fl6eLiMNUONqupKdpxolb1Oxje\" />\r\n  <component name=\"ProjectLevelVcsManager\">\r\n    <ConfirmationsSetting value=\"1\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;spring.configuration.checksum&quot;: &quot;a74ad8dfacd4f985eb3977517615ce25&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"MessageAnalyzerApplication\" type=\"SpringBootApplicationConfigurationType\" factoryName=\"Spring Boot\">\r\n      <module name=\"core\" />\r\n      <option name=\"SPRING_BOOT_MAIN_CLASS\" value=\"liga.medical.messageanalyzer.core.MessageAnalyzerApplication\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"db6245c5-4ddd-49ef-9de7-c2599928ff44\" name=\"Changes\" comment=\"\" />\r\n      <created>1665054418174</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1665054418174</updated>\r\n      <workItem from=\"1665054420127\" duration=\"2820000\" />\r\n      <workItem from=\"1665061047946\" duration=\"1422000\" />\r\n      <workItem from=\"1665344506821\" duration=\"598000\" />\r\n      <workItem from=\"1665671307290\" duration=\"258000\" />\r\n      <workItem from=\"1665674532884\" duration=\"1365000\" />\r\n      <workItem from=\"1665751573845\" duration=\"1303000\" />\r\n      <workItem from=\"1665818719263\" duration=\"604000\" />\r\n      <workItem from=\"1665828267018\" duration=\"2538000\" />\r\n      <workItem from=\"1666267384498\" duration=\"1352000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"--\">\r\n      <created>1665675975645</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1665675975645</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"with rest and rabbit controllers\">\r\n      <created>1665829035684</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1665829035684</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"with rest and rabbit controllers\">\r\n      <created>1665834911775</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1665834911775</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"4\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"--\" />\r\n    <MESSAGE value=\"with rest and rabbit controller\" />\r\n    <MESSAGE value=\"with rest and rabbit controllers\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"with rest and rabbit controllers\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision e51956cd7cd3d0a58a37f357def5eaf6fb14001c)
++++ b/.idea/workspace.xml	(date 1666691908943)
+@@ -4,9 +4,12 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="db6245c5-4ddd-49ef-9de7-c2599928ff44" name="Changes" comment="with rest and rabbit controllers">
++    <list default="true" id="db6245c5-4ddd-49ef-9de7-c2599928ff44" name="Changes" comment="--">
++      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/core/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/core/pom.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/core/src/main/java/liga/medical/messageanalyzer/core/config/RabbitConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/liga/medical/messageanalyzer/core/config/RabbitConfig.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/core/src/main/java/liga/medical/messageanalyzer/core/controller/RabbitController.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/liga/medical/messageanalyzer/core/controller/RabbitController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/core/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/resources/application.properties" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -80,6 +83,7 @@
+       <workItem from="1665818719263" duration="604000" />
+       <workItem from="1665828267018" duration="2538000" />
+       <workItem from="1666267384498" duration="1352000" />
++      <workItem from="1666691760457" duration="148000" />
+     </task>
+     <task id="LOCAL-00001" summary="--">
+       <created>1665675975645</created>

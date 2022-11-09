@@ -1,0 +1,6 @@
+POST http://localhost:8081/rabbit/send
+
+<> 2022-11-09T054705.400.json
+
+###
+

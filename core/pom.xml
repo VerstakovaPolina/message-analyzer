@@ -19,6 +19,11 @@
 
 
     <dependencies>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.9.9.1</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-actuator -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -60,7 +65,7 @@
             <groupId>liga.medical</groupId>
             <artifactId>dto</artifactId>
         </dependency>
-
+        
     </dependencies>
 
     <build>

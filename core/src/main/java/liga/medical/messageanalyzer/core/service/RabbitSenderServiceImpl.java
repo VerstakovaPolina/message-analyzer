@@ -21,9 +21,9 @@ public class RabbitSenderServiceImpl implements RabbitSenderService {
     }
 
     @Override
-    public void sendMessage(RabbitMessageDto messageDto, String queue) throws JsonProcessingException {
+    public String sendMessage(RabbitMessageDto messageDto, String queue) throws JsonProcessingException {
         String messageStr = objectMapper.writeValueAsString(messageDto);
         amqpTemplate.convertAndSend(queue, messageStr);
-        System.out.println(String.format("Сообщение [%s] в очередь [%s] отправлено.", messageStr, queue));
+        return messageStr;
     }
 }

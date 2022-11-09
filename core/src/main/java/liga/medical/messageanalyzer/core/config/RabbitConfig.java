@@ -16,7 +16,7 @@ public class RabbitConfig {
     public static final String COMMON_MONITORING_QUEUE = "common_monitoring_queue";
 
     @Value("${spring.rabbitmq.queue}")
-    private String commonMonitoringQueueName;
+    private String commonMonitoringQueue;
 
     @Value("${spring.rabbitmq.username}")
     private String username;
@@ -47,7 +47,7 @@ public class RabbitConfig {
 
     @Bean
     public Queue getQueue() {
-        return new Queue(commonMonitoringQueueName);
+        return new Queue(commonMonitoringQueue);
     }
 }
 

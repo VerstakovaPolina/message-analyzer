@@ -20,7 +20,8 @@ public class RabbitController {
     }
 
     @PostMapping("/send")
-    public void sendMessage(@RequestBody RabbitMessageDto messageDto) throws JsonProcessingException {
-        rabbitSenderService.sendMessage(messageDto, RabbitConfig.COMMON_MONITORING_QUEUE);
+    public String sendMessage(@RequestBody RabbitMessageDto messageDto) throws JsonProcessingException {
+        return rabbitSenderService.sendMessage(messageDto, RabbitConfig.COMMON_MONITORING_QUEUE);
+
     }
 }
